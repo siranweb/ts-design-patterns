@@ -3,12 +3,13 @@ import { Checkbox, LinuxCheckbox, WindowsCheckbox } from './checkboxes';
 
 // https://refactoring.guru/design-patterns/abstract-factory
 
-interface IGUIFactory {
+// Unlike factory method example, it doesn't contain any politics (business logic)
+interface GUIFactory {
     createButton(): Button;
     createCheckbox(checked?: boolean): Checkbox;
 }
 
-class WindowsGUIFactory implements IGUIFactory {
+class WindowsGUIFactory implements GUIFactory {
     public createButton(): Button {
         return new WindowsButton();
     }
@@ -18,7 +19,7 @@ class WindowsGUIFactory implements IGUIFactory {
     }
 }
 
-class LinuxGUIFactory implements IGUIFactory {
+class LinuxGUIFactory implements GUIFactory {
     public createButton(): Button {
         return new LinuxButton();
     }
