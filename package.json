@@ -1,0 +1,11 @@
+{
+  "name": "ts-design-patterns",
+  "version": "1.0.0",
+  "description": "Design patterns with Typescript",
+  "keywords": ["typescript", "pattern", "design", "refactor"],
+  "author": "siranweb <siranweb@tuta.io>",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  }
+}
