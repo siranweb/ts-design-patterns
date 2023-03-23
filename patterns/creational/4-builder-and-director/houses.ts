@@ -6,6 +6,8 @@ export interface House {
     withBasement?: boolean;
 }
 
-export interface HousePlan extends House {
-    price: number;
+export interface HousePrices {
+    doorPrice: number;
+    windowsPrice: number;
+    basementPrice: number;
 }

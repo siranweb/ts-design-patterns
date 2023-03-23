@@ -1,5 +1,5 @@
 import { Door, DoorMaterial } from './doors';
-import { House, HousePlan } from './houses';
+import { House, HousePrices } from './houses';
 
 export interface Builder {
     setDoor(door: Door): this;
@@ -11,8 +11,12 @@ export interface Builder {
 export class HouseBuilder implements Builder {
     private result: House = {};
 
-    public setDoor(door: Door): this {
-        this.result.door = door;
+    public setDoor(door?: Door): this {
+        if (door) {
+            this.result.door = door;
+        } else {
+            delete this.result.door;
+        }
         return this;
     }
 
@@ -37,51 +41,43 @@ export class HouseBuilder implements Builder {
 }
 
 export class HousePlanBuilder implements Builder {
-    private result: HousePlan = {
-        price: 0,
+    private result: HousePrices = {
+        basementPrice: 0,
+        doorPrice: 0,
+        windowsPrice: 0,
     };
 
-    private getDoorCost(): number {
-        if (this.result.door?.material) {
-            if (this.result.door?.material === DoorMaterial.metal) return 10;
-            if (this.result.door?.material === DoorMaterial.wood) return 5;
+    public setDoor(door?: Door): this {
+        if (door?.material === DoorMaterial.metal) {
+            this.result.doorPrice = 10;
+        } else if (door?.material === DoorMaterial.wood) {
+            this.result.doorPrice = 5;
+        } else {
+            this.result.doorPrice = 0;
         }
-        return 0;
-    }
-
-    private updatePrice(): void {
-        const doorCost = this.getDoorCost();
-        const windowsCost = (this.result.windowsAmount ?? 0) * 3;
-        const basementCost = this.result.withBasement ? 20 : 0;
-        this.result.price = doorCost + windowsCost + basementCost;
-    }
-
-    public setDoor(door: Door): this {
-        this.result.door = door;
-        this.updatePrice();
         return this;
     }
 
     public setWindowsAmount(amount: number): this {
-        this.result.windowsAmount = amount;
-        this.updatePrice();
+        this.result.windowsPrice = amount * 3;
         return this;
     }
 
     public setWithBasement(bool: boolean): this {
-        this.result.withBasement = bool;
-        this.updatePrice();
+        this.result.basementPrice = bool ? 20 : 0;
         return this;
     }
 
     public reset(): this {
         this.result = {
-            price: 0
+            basementPrice: 0,
+            doorPrice: 0,
+            windowsPrice: 0
         };
         return this;
     }
 
-    public getResult(): HousePlan {
+    public getResult(): HousePrices {
         return this.result;
     }
 }
